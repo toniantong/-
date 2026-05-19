@@ -2,13 +2,13 @@ from fractions import Fraction
 
 def bernoulli_numbers(n):
     """計算前 n 個伯努利數 (B_0 到 B_n)"""
-    B = [Fraction(0) for _ in range(n+1)]
-    B[0] = Fraction(1)
-    for m in range(1, n+1):
+    B = [Fraction(0) for _ in range(n+1)]  # 建立一個陣列存放 B_0 到 B_n
+    B[0] = Fraction(1)                     # 定義 B_0 = 1
+    for m in range(1, n+1):                # 從 B_1 開始逐步計算
         s = Fraction(0)
-        for k in range(m):
+        for k in range(m):                 # 計算遞迴公式中的加總部分
             s += Fraction(binomial(m+1, k)) * B[k]
-        B[m] = -s / Fraction(m+1)
+        B[m] = -s / Fraction(m+1)          # 套用公式得到 B_m
     return B
 
 def binomial(n, k):
