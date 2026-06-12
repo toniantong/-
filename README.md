@@ -1,1 +1,1 @@
-\-
+[\-](https://toniantong.github.io/-/)
