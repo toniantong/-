@@ -6,12 +6,18 @@
 </head>
 <body>
 <h1>h1</h1>
-<p></p>
+<p id="display-area">test</p>
 <p></p>
 <a name="first">first 1st</a>
 <a name="second">second 2nd</a>
 <a name="thid">third 3rd</a>
 <a name="fourth">fourth 4th</a>
 <a name="fifth">fifth 5th</a>
+<script>
+  function(){
+    let testText = "加入文字";
+    document.getElementById("display-area").append(testText);
+  }
+</script>
 </body>
 </html>
