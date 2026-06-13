@@ -1,0 +1,71 @@
+1JavaScript DOM 教學：Document 與 Element /* 自定義滾動條以增加美觀 */ ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f1f1; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; } .code-block { font-family: 'Courier New', Courier, monospace; background-color: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-top: 0.5rem; margin-bottom: 1rem; font-size: 0.875rem; } .demo-area { background-color: #f8fafc; border: 1px dashed #cbd5e1; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem; } 
+
+JavaScript DOM 核心教學
+
+深入理解 Document 與 Element 的操作
+
+1. 什麼是 DOM？
+
+DOM (Document Object Model，文件物件模型) 是一個程式介面。當瀏覽器載入 HTML 網頁時，它會將所有的 HTML 標籤轉換成一個個的「物件 (Object)」，並形成一個樹狀結構。 
+
+document：代表**整個網頁**的入口點。你要找任何東西，都要從它開始。
+
+element：代表網頁中的**單一節點 (標籤)**，例如一個 <div>、一個按鈕或一段文字。
+
+2. Document：網頁的統治者
+
+document 物件提供了許多方法，讓我們可以在網頁中**尋找**現有的元素，或是**建立**新的元素。
+
+A. 尋找元素 (Selecting Elements)
+
+最常用的兩個方法是 getElementById 和 querySelector。
+
+// 透過 ID 尋找單一元素 const myTitle = document.getElementById('title-id'); // 透過 CSS 選擇器尋找 (尋找第一個符合的) const myBox = document.querySelector('.box-class'); // 尋找所有符合條件的元素 (回傳 NodeList) const allButtons = document.querySelectorAll('button'); 
+
+B. 建立新元素 (Creating Elements)
+
+使用 createElement 可以在記憶體中做出一個新的 HTML 標籤，然後用 appendChild 把它放進網頁中。
+
+互動 Demo：建立元素
+
+點擊建立新段落 
+
+const btn = document.getElementById('demo1-btn'); const container = document.getElementById('demo1-container'); btn.addEventListener('click', () => { // 1. 建立一個新的 
+
+元素 const newElement = document.createElement('p'); // 2. 設定內容與樣式 newElement.textContent = '這是一段用 JavaScript 動態建立的文字！ 🎉'; newElement.className = 'bg-green-100 text-green-800 p-2 rounded'; // 3. 將元素加入到網頁的容器中 container.appendChild(newElement); }); 
+
+3. Element：操作單一標籤
+
+一旦你透過 document 找到了某個 element（元素），你就可以開始改變它的長相、內容或屬性。
+
+常用屬性與方法
+
+element.textContent：修改或讀取元素的純文字內容。
+
+element.innerHTML：修改或讀取元素的 HTML 結構。
+
+element.style：直接修改 CSS 樣式（行內樣式）。
+
+element.classList：新增、移除或切換 CSS 類別 (Class)。
+
+互動 Demo：修改元素的樣式與內容
+
+我是一個普通的方塊 
+
+改變顏色 改變文字 切換形狀 
+
+const box = document.getElementById('demo2-box'); const textSpan = document.getElementById('demo2-text'); // 改變顏色 (修改 classList) document.getElementById('demo2-btn-color').addEventListener('click', () => { box.classList.toggle('bg-blue-500'); box.classList.toggle('bg-red-500'); }); // 改變文字 (修改 textContent) document.getElementById('demo2-btn-text').addEventListener('click', () => { textSpan.textContent = textSpan.textContent === '被修改了！' ? '我是一個普通的方塊' : '被修改了！'; }); // 切換形狀 (修改 classList) document.getElementById('demo2-btn-shape').addEventListener('click', () => { box.classList.toggle('rounded-lg'); box.classList.toggle('rounded-full'); }); 
+
+4. 事件 (Events)：讓元素活起來
+
+前面示範中一直在使用的 addEventListener 就是用來監聽使用者在 element 上做的動作（例如點擊、滑鼠移動、鍵盤輸入等）。
+
+互動 Demo：輸入框事件
+
+請輸入任意文字： 
+
+你目前輸入的內容： 
+
+const inputEl = document.getElementById('demo3-input'); const outputEl = document.getElementById('demo3-output'); // 監聽 'input' 事件 (當內容改變時立刻觸發) inputEl.addEventListener('input', (event) => { // event.target 代表觸發事件的元素 (也就是 input 本身) // .value 可以取得輸入框的值 outputEl.textContent = event.target.value; }); 
+
+// 等待整個 HTML 載入完成後才執行 JS document.addEventListener('DOMContentLoaded', () => { // --- Demo 1: 建立元素 --- const btn1 = document.getElementById('demo1-btn'); const container1 = document.getElementById('demo1-container'); btn1.addEventListener('click', () => { const newElement = document.createElement('p'); newElement.textContent = '這是一段用 JavaScript 動態建立的文字！ 🎉'; newElement.className = 'bg-indigo-50 text-indigo-800 p-3 rounded border border-indigo-100 shadow-sm animate-pulse'; // 移除 animate-pulse 讓它閃爍一次就好 setTimeout(() => { newElement.classList.remove('animate-pulse'); }, 1000); container1.appendChild(newElement); }); // --- Demo 2: 修改元素 --- const box2 = document.getElementById('demo2-box'); const textSpan2 = document.getElementById('demo2-text'); document.getElementById('demo2-btn-color').addEventListener('click', () => { if(box2.classList.contains('bg-blue-500')) { box2.classList.replace('bg-blue-500', 'bg-red-500'); } else { box2.classList.replace('bg-red-500', 'bg-blue-500'); } }); document.getElementById('demo2-btn-text').addEventListener('click', () => { if (textSpan2.textContent.includes('普通')) { textSpan2.textContent = '內容被改變了！🚀'; } else { textSpan2.textContent = '我是一個普通的方塊'; } }); document.getElementById('demo2-btn-shape').addEventListener('click', () => { // Tailwind class for border radius if(box2.classList.contains('rounded-lg')) { box2.classList.replace('rounded-lg', 'rounded-full'); } else { box2.classList.replace('rounded-full', 'rounded-lg'); } }); // --- Demo 3: 事件監聽 --- const inputEl = document.getElementById('demo3-input'); const outputEl = document.getElementById('demo3-output'); inputEl.addEventListener('input', (event) => { outputEl.textContent = event.target.value; if(event.target.value === '') { outputEl.textContent = '(尚未輸入)'; } }); // 初始化顯示文字 outputEl.textContent = '(尚未輸入)'; }); 
